@@ -1,5 +1,7 @@
 Salesforce Status Helper created by Drew Rutherford
 
+With Drew's blessings, I have become maintainer for this tool. 
+
 Available on the Chrome Store: https://chrome.google.com/webstore/detail/salesforce-status-helper/pocbnhhipcmpgeonneedpjkclpanljpi
 
 -----------------------------------------------------------------------------------------------------
