@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Salesforce Status Helper</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="choose_status.css" />
+</head>
+
+<body class="theme-dark">
+    <div id="status-section">
+        <div class="button available">Available</div>
+        <div class="button backlog">Backlog</div>
+        <div class="button disable">Disable</div>
+    </div>
+    <div id="queue-section" hidden>
+        <label class="queue_label">Start / End Shift:</label>
+        <form>
+            <p class="ptable">
+                <label class="labeltable" for="startshift">Start of shift:</label>
+                <input class="inputtable" id="startshift" type="time">
+            </p>
+            <p class="ptable">
+                <label class="labeltable" for="endshift">End of shift:</label>
+                <input class="inputtable" id="endshift" type="time">
+            </p>
+        </form>
+        <label class="queue_label">First Shift:</label>
+        <form>
+            <p class="ptable">
+                <label class="labeltable" for="firstshiftstart">Start:</label>
+                <input class="inputtable" id="firstshiftstart" type="time">
+            </p>
+            <p class="ptable">
+                <label class="labeltable" for="firstshiftend">End:</label>
+                <input class="inputtable" id="firstshiftend" type="time">
+            </p>
+        </form>
+        <div class="checkbox_label">
+    <label>
+        Use Second Shift:
+        <input type="checkbox" id="secondshift_enabled_checkbox">
+    </label>
+</div>
+
+<div id="secondshift_section">
+    <label class="queue_label">Second Shift:</label>
+    <div id="secondshift_block">
+        <form>
+            <p class="ptable">
+                <label class="labeltable" for="secondshiftstart">Start:</label>
+                <input class="inputtable" id="secondshiftstart" type="time">
+            </p>
+            <p class="ptable">
+                <label class="labeltable" for="secondshiftend">End:</label>
+                <input class="inputtable" id="secondshiftend" type="time">
+            </p>
+        </form>
+    </div>
+</div>
+
+        <div class="checkbox_label">
+            <label>
+                Enable:
+                <input type="checkbox" id="enableQueue_checkbox">
+            </label>
+        </div>
+        <div id="queueValidationMsg" class="validation-msg"></div>
+    </div>
+    <hr />
+    <div id="site-section">
+<select id="salesforcesite" class="siteSelectHidden" aria-hidden="true" tabindex="-1">
+  <option value="government">government</option>
+  <option value="commercial">commercial</option>
+</select>
+
+<button id="siteBtn" class="siteBtn" type="button" aria-haspopup="true" aria-expanded="false">Site Options</button>
+<div id="siteMenu" class="paletteMenu siteMenu" hidden>
+  <button type="button" class="siteOption" data-site="government">zscalergov</button>
+  <button type="button" class="siteOption" data-site="commercial">zscaler</button>
+</div>
+
+        <div class="checkbox_label">
+            <label>
+                Use Automated Queue:
+                <input type="checkbox" id="queuehours_checkbox">
+            </label>
+        </div>
+        <div style="text-align: center; color:aqua;" id="saveStatus"></div>
+        <button class="saveButton" id="saveSettingsButton">Apply Settings</button>
+    </div>
+    <hr />
+    <div id="error-content" class="hidden">
+        <p>Salesforce is not in your active tab. Navigate to Salesforce before opening the extension.</p>
+    </div>
+    <script src="choose_status.js"></script>
+<div class="footerBar">
+  <div class="footerLeft">
+    <span id="uiVersion" class="uiVersion">5.0.0</span>
+  </div>
+
+  <div class="footerCenter">
+    <div class="paletteWrap">
+      <button id="paletteBtn" class="paletteBtn" type="button" aria-haspopup="true" aria-expanded="false">Palette</button>
+      <div id="paletteMenu" class="paletteMenu" hidden>
+        <button type="button" class="paletteOption" data-theme="legacy">Legacy</button>
+        <button type="button" class="paletteOption" data-theme="dark">Dark</button>
+        <button type="button" class="paletteOption" data-theme="rainbow">Rainbow</button>
+        <button type="button" class="paletteOption" data-theme="tiedye">Tie-Dye</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footerRight">
+    <a class="helpIcon" href="https://github.com/tarus13/Salesforce-Status-Helper-Chrome" target="_blank" rel="noreferrer" title="Help / Repo">?</a>
+  </div>
+</div>
+
+</body>
+
+</html>
