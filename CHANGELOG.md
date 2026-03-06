@@ -1,41 +1,23 @@
 # Changelog
 
 ## [5.0.0]
+- **Optional Second Shift** — Second Shift can now be toggled on or off via a checkbox. Previously it was always active.
+- **Theme Support** — Added a Palette selector in the footer with four themes: Legacy, Dark, Rainbow, and Tie-Dye.
+- **Improved Site Selection UI** — Site Options now uses a custom button/dropdown instead of a plain `<select>` element, with active state highlighting.
+- **Auto Queue Validation** — The Enable Auto Queue checkbox now requires Start/End Shift and First Shift times to be filled before it can be activated. A validation message is shown if fields are missing.
+- **Auto Queue Field Monitoring** — If a required shift time field is cleared while Auto Queue is enabled, Auto Queue automatically disables and notifies the user.
+- **Improved Injection Strategy** — Content script is now injected on browser startup, extension install/update, tab activation, and tab load completion. Previously only injected on active tab update.
+- **Multi-Tab Support** — Extension now targets all matching Salesforce tabs, not just the currently active one.
+- 
+## [5.1.1]
 
-> Note: This release is a major UI/UX modernization of the extension popup, plus validation hardening for Auto Queue.  
-> Compared against production `master.zip` (manifest version observed as 4.6.3 in that ZIP).
+### Bug Fixes
 
-### Added
-- Palette system with multiple themes selectable from the popup (button-driven menu UI).
-- Unified “button + submenu” interaction pattern for **Palette** and **Site Options**.
+- **Fixed: Auto Queue required clicking the extension icon to activate**
+  A race condition in the popup caused `canEnableAutoQueue()` to run before the DOM was populated with saved values. This caused `savedEnableQueueCheckbox` to be incorrectly written as `false` to storage, so the background service worker would not send the `enableAutoQueue` command on page load. The restore logic was moved into `restore_options()` where the DOM is guaranteed to be fully populated before any validation runs.
 
-### Changed
-- Default popup theme now loads as **Dark** (instead of Legacy).
-- “Total Work Hours” renamed to **“Start / End Shift”**.
-- “First Shift Hours” renamed to **“First Shift”**.
-- “Second Shift Hours” renamed to **“Second Shift”**.
-- Footer layout updated: version display, Palette button placement, and help link positioning refined.
+- **Fixed: Unchecking Enable Auto Queue did not persist without clicking Apply Settings**
+  Toggling the Enable Auto Queue checkbox now immediately saves the new state to storage. Previously the state was only saved when the user clicked "Apply Settings," which meant disabling the checkbox had no effect across sessions or page reloads.
 
-### Fixed
-- Auto Queue “Enable” validation hardened:
-  - Prevent enabling Auto Queue unless required shift fields are populated.
-  - If required fields are cleared while enabled, Auto Queue is automatically disabled and a message is shown.
-- Help/Repo link updated to new maintainer repository:
-  - `github.com/tarus13/Salesforce-Status-Helper-Chrome`
-- Site Options control styling corrected (no longer “invisible until hover” behavior).
-
-### Internal / Maintenance
-- Popup UI refactor: theme classes and styling reorganized for maintainability across palettes.
-- Background URL matching logic adjusted for correctness (site matching behavior updated).
-
-## [5.1.1] - 2026-02-26
-
-### Fixed 
--Auto-activation on browser startup — Extension now automatically injects into open Salesforce tabs when Chrome launches. Previously, the extension would not activate unless the user manually clicked the extension icon to open the popup.
--Activation on tab switch — Content script now injects when a user switches to a Salesforce tab, ensuring the helper is always running without manual intervention.
--Activation on install/update — Content script is now injected into all matching open tabs immediately upon extension install or update.
--Tab update listener scoping — The onUpdated listener is now correctly scoped to changeInfo.status === "complete", preventing premature injection attempts before the page has fully loaded.
-
-### Changed
--Refactored tab injection logic into a shared injectIntoMatchingTabs() helper function to reduce code duplication across listeners.
-
+- **Fixed: Auto Queue did not activate when page was loaded before shift start time**
+  When the page was loaded before the configured shift start time (e.g., loading at 8:27 AM for an 8:30 AM shift), `autoQueueCheck()` would find no matching shift window and call `disableAutoQueue()`, permanently clearing the polling interval. The extension would then never detect when the shift start time arrived. The fix removes the automatic `disableAutoQueue()` call from `autoQueueCheck()`. The polling interval now runs continuously until the user explicitly disables it via the popup. Status is set to Offline during off-hours, and automatically transitions to Available or Backlog when the configured shift window begins.
