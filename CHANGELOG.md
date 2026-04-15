@@ -1,5 +1,15 @@
 # Changelog
 
+## [5.2.1]
+### Bug Fixes
+- **Fixed: Extension triggered dashboard list view menus** — `document.querySelector('lightning-button-menu button')` matched the first such element on the entire page, which on dashboard pages was the gear/settings icon for list views — not the Omni-Channel status dropdown. This caused "New/Clone/Rename/Select Fields to Display/Delete/Reset Column Sorting/Reset Column Widths" to pop up without user interaction every 15 seconds. All status-related selectors are now scoped to `omni-widget2-header.runtime_service_omnichannelStatus`.
+- **Fixed: Initialization required manually opening the Omni-Channel dropdown** — `getInitialVariables()` required `lightning-menu-item` elements to exist before allowing startup, but Enhanced Omni-Channel only renders these elements while the dropdown is physically open. Initialization looped indefinitely until the user manually clicked the widget. The check was removed; menu items are now resolved dynamically at click time by `clickStatusMenuItem()`.
+- **Fixed: Auto Queue did not activate without clicking the extension icon** — Consequence of the above two failures. `getInitialVariables()` never completed, so `allVariablesLoaded` was never sent to the background service worker and `enableAutoQueue` was never dispatched. The "Enabled with Automated Queue" banner would not appear until the user manually opened the popup.
+
+### Internal / Maintenance
+- **Two-Tier DOM Scoping** — Introduced `getOmniStatusHeader()` scoped to `omni-widget2-header.runtime_service_omnichannelStatus` for all status operations, and `getOmniWidget()` scoped to `div.runtime_service_omnichannelOmniWidget` for error checks. Status interactions are now fully isolated from the work list panel and any other `lightning-button-menu` elements on the page.
+- **Removed Shadow DOM Fallback** — DOM capture confirmed Enhanced Omni-Channel uses light DOM exclusively. The `shadowRoot` probing in `clickStatusMenuItem()` was dead code and has been removed.
+
 ## [5.2.0]
 ### New Features & Improvements
 - **Enhanced Omni-Channel Compatibility** — Rebuilt DOM interaction layer to support Salesforce Enhanced Omni-Channel. Standard Omni-Channel reaches End of Life in Summer '26; this version targets the `lightning-button-menu` and `lightning-menu-item` component structure used by Enhanced.
