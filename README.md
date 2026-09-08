@@ -31,9 +31,17 @@ https://chromewebstore.google.com/detail/salesforce-status-helper/pmffhgmpchebgc
 ### Case milestone timers (SLA countdowns)
 - Reads the Milestones countdown from a case whenever it's on screen and keeps counting down for you afterward.
 - **30 minutes or less** — an amber heads-up.
-- **10 minutes or less, or overdue** — a red alert plus an audible chime and a desktop notification, so a breach can't sneak up while you're heads-down elsewhere.
+- **10 minutes or less, or overdue** — a red alert, so a breach can't sneak up while you're heads-down elsewhere.
+- **Escalating chimes** at 10, 5 and 2 minutes, plus a desktop notification. Opening the case acknowledges the warning and cancels the remaining chimes — act once and you won't be nagged again.
+- **Overdue never chimes.** A case a customer updated overnight greets you as a red row, not an alarm.
+- **Mute** — an "Alerts On / Alerts Muted" button for anyone working near colleagues. It silences everything except New cases, whose first-response SLA is too important to mute. Muting affects sound only; rows, countdowns, and notifications carry on.
 - Cases in New are tagged "1st resp" and sort first, since New carries the first-response SLA.
-- **Pull Case Timers** reads every timer-bearing case in one pass — it opens each briefly, reads the timer, and closes it again. It never closes a tab you already had open, stops if a dialog appears so unsaved work is never disturbed, and returns you where you started.
+- **Timers are pulled automatically** every two hours during your shift. It runs on the clock rather than on your status, and it doesn't matter which view or browser tab you have in front — including while you're away in Zoom or another tab, where the whole pull can happen unseen and put your view back before you return.
+  - It will not run while a case is assigned to you, while a dialog is open, or while you're actively typing in the Salesforce tab. It waits, tries again, and says why in the console.
+  - A pull that reads nothing doesn't count against the two-hour clock, so a failed attempt never costs you the window.
+  - Turn it off with the toggle beside My Cases and a manual **Pull Case Timers** button appears in its place.
+- **A pull** reads every timer-bearing case in one pass (New, Re-open, Customer Note Added, Escalated to Engineering, Researching, Customer Callback Scheduled), New first — it opens each briefly, reads the timer, and closes it again. It never closes a tab you already had open, never closes a case assigned to you, stops if a dialog appears so unsaved work is never disturbed, and returns you to whatever you were reading when it finishes.
+- Countdowns are read only from the case on screen, so a case can never inherit another case's timer, and a case without a milestone never shows a phantom one.
 - Click "Milestones tracked" to see every tracked case and its countdown. Each one's tooltip says when it was last read, so you always know how fresh it is.
 
 ### Themes
@@ -47,13 +55,15 @@ Several palettes are available under the **Palette** menu, including a couple ma
 - Omni-Channel automation works **only** on `.salesforce.com` and `.force.com` pages. Nothing happens anywhere else.
 - The current build targets the **zscalergov** org. Commercial (zscaler) case load moved to Genesys Cloud, so the old site selector was removed.
 - Genesys Queue Sync is scoped to this organization's Genesys Cloud domain, and needs a Genesys tab open to have anything to control.
-- Milestone timers only cover cases the extension has actually seen — ones you've opened, or ones picked up by **Pull Case Timers**.
+- Milestone timers only cover cases the extension has actually seen — ones you've opened, or ones picked up by a pull.
+- A pull that runs while the Salesforce tab is hidden may come back empty: Chrome does not draw a hidden tab, so a case can open without ever showing its Milestones panel. The extension notices, doesn't count the attempt, and tries again shortly.
+- Muting silences the chime for every status except New. Those other statuses still carry real SLAs, so mute is a trade of audible warning for quiet, not a free setting.
 
 ---
 
 ## Troubleshooting
 
-Open Developer Tools with **F12** (or Settings → More Tools → Developer Tools) and type **SFSH** into the console filter box to isolate this extension's logs.
+Open Developer Tools with **F12** (or Settings → More Tools → Developer Tools) and type **SFSH** into the console filter box to isolate this extension's logs. Every pull reports what it read, what it couldn't, and why it is waiting, so a delayed or skipped pull can be traced from the log alone.
 
 - For status or case issues, check the **Salesforce tab's** console.
 - For Genesys sync issues, check **both** the Salesforce tab and the Genesys tab.
