@@ -73,4 +73,5 @@ Please include those log lines when reporting an issue. They're there on purpose
 
 ---
 
-<sub>Originally created by Drew Rutherford, who handed over the keys. The tool has been rebuilt and extended well past its original shape since then, but it started with him — thanks, Drew.</sub>
+<sub>Originally created by Drew Rutherford, who handed over the keys. The tool has been rebuilt and extended well past its original shape since then, but it started with him. 
+Thanks, Drew.</sub>
