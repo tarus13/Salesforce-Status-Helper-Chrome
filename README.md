@@ -76,6 +76,8 @@ Seven palettes under **Settings → Appearance → Theme**: **White** (the defau
 - Every completed pull is recorded — when it ran, whether the tab was hidden, how long it took and how many timers it read — keeping the most recent fifty.
 - Turning off Alert sound silences the chime for every status except New. Those other statuses still carry real SLAs, so it's a trade of audible warning for quiet, not a free setting.
 
+- [If Using Custom Dashboard Instructions.txt](https://github.com/user-attachments/files/32626503/If.Using.Custom.Dashboard.Instructions.txt)
+
 ---
 
 ## Troubleshooting
